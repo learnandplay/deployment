@@ -1,5 +1,8 @@
 #!/bin/bash
 
+user=learnandplay
+password=password
+
 if [ ! -d /var/lib/mysql/learnandplay ]; then
     mysql_install_db
     /usr/bin/mysqld_safe &
