@@ -1,3 +1,14 @@
 #!/bin/bash
 
-sudo docker run -d -p 3306:3306 -v /data/mysql:/var/lib/mysql learnandplay_container_mysql
+echo "MySQL container setup"
+echo "Please enter your configuration or press enter to use the default value"
+
+bindport=3306
+read -p "Container binding port [$bindport] : " REPLY
+bindport=${REPLY:-$bindport}
+
+datadir=/data/mysql
+read -p "Local database directory [$datadir] : " REPLY
+datadir=${REPLY:-$datadir}
+
+sudo docker run -d -p $bindport:3306 -v $datadir:/var/lib/mysql learnandplay_container_mysql
