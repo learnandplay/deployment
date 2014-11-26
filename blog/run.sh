@@ -1,13 +1,9 @@
 #!/bin/bash
 
-echo "Django setup"
+echo "Wordpress container setup"
 echo "Please enter your configuration or press enter to use the default value"
 
-secret=changeme
-read -p "Secret key [$secret] : " REPLY
-secret=${REPLY:-$secret}
-
-dbname=learnandplay
+dbname=wordpress
 read -p "Database name [$dbname] : " REPLY
 dbname=${REPLY:-$dbname}
 
@@ -25,27 +21,20 @@ do
     echo "Please try again"
 done
 
-mysqlhost=`../mysql/get-ip.sh`
-read -p "MySQL host [$mysqlhost] : " REPLY
-mysqlhost=${REPLY:-$mysqlhost}
+mysqlcontainer=learnandplay-mysql
+read -p "Linked MySQL container [$mysqlcontainer] : " REPLY
+mysqlcontainer=${REPLY:-$mysqlcontainer}
 
-mysqlport=3306
-read -p "MySQL user [$mysqlport] : " REPLY
-mysqlport=${REPLY:-$mysqlport}
-
-containername=learnandplay-website
+containername=learnandplay-blog
 read -p "Container name [$containername] : " REPLY
 containername=${REPLY:-$containername}
 
-bindport=8000
+bindport=8080
 read -p "Container binding port [$bindport] : " REPLY
 bindport=${REPLY:-$bindport}
 
 sudo docker run \
-    -e LP_SECRET_KEY=$secret \
-    -e LP_MYSQL_DBNAME=$dbname \
-    -e LP_MYSQL_USER=$mysqluser \
-    -e LP_MYSQL_PASSWORD=$mysqlpassword \
-    -e LP_MYSQL_HOST=$mysqlhost \
-    -e LP_MYSQL_PORT=$mysqlport \
---name $containername -d -p $bindport:8000 -t learnandplay_container_website
+    -e WORDPRESS_DB_NAME=$dbname \
+    -e WORDPRESS_DB_USER=$mysqluser \
+    -e WORDPRESS_DB_PASSWORD=$mysqlpassword \
+--name $containername --link $mysqlcontainer:mysql -p $bindport:80 -d wordpress
