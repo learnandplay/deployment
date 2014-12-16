@@ -9,7 +9,7 @@ MAINTAINER Romain Zanchi
 
 # Basic setup
 RUN apt-get update
-RUN apt-get install -y git wget libmysqlclient-dev
+RUN apt-get install -y git wget libmysqlclient-dev node-less
 
 # Python
 RUN apt-get install -y python-dev python-pip

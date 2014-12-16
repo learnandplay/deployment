@@ -1,3 +1,3 @@
 #!/bin/bash
 
-sudo docker build -t learnandplay_container_mysql .
+sudo docker build --no-cache -t learnandplay_container_mysql .
